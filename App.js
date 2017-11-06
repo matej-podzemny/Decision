@@ -1,21 +1,27 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { TabNavigator } from 'react-navigation';
+
+import WelcomeScreen from './screens/WelcomeScreen';
+import DecisionScreen from './screens/DecisionScreen';
+import ResultScreen from './screens/ResultScreen';
+
 
 export default class App extends React.Component {
   render() {
+
+    const MainNavigator = TabNavigator({
+      welcome: { screen: WelcomeScreen },
+      decision: { screen: DecisionScreen },
+      result: { screen: ResultScreen },
+    });
+
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
+      <MainNavigator />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
 });
