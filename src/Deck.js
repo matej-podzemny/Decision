@@ -20,6 +20,7 @@ class Deck extends Component {
 
   constructor(props) {
     super(props);
+    // const color = new Animated.value();
     const position = new Animated.ValueXY();
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,//touchng this?
@@ -85,10 +86,7 @@ class Deck extends Component {
       inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
       outputRange: ['-120deg', '0deg', '120deg']
     });
-    // const highlight = position.x.interpolate({
-    //   inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
-    //   outputRange: ['rgba(255, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.8)', 'rgba(0, 255, 0, 0.8)']
-    // });
+
 
     return {
       ...position.getLayout(),
@@ -98,6 +96,24 @@ class Deck extends Component {
       transform: [{ rotate }]
     };
   }
+
+  //  getCardColor() {
+   //
+  //    const { color } = this.state;
+  //    return {
+  //      transform: [{ color }]
+  //    };
+
+  //   const color = position.x.interpolate({
+  //     inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
+  //     outputRange: ['rgba(255, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.8)', 'rgba(0, 255, 0, 0.8)']
+  //   });
+  //
+  //   return {
+  //     ...
+  //     transform: [{ color }]
+  //   }
+  // }
 
   renderCards() {
     if (this.state.index >= this.props.data.length) {

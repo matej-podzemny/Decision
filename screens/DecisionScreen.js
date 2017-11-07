@@ -4,6 +4,7 @@ import { Card, Button } from 'react-native-elements';
 import Deck from '../src/Deck';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const fontAutoSize = SCREEN_WIDTH * 0.1;
 
 
 const DATA = [
@@ -44,8 +45,21 @@ export default class DecisionScreen extends Component {
           <BackgroundImage
             image={item.img}
           >
-            <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
-              <Text style={styles.text}>
+            <View style={{
+              flex:1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              //height: 150,
+            }}>
+      <Text
+                //adjustsFontSizeToFit
+                //numberOfLines={1}
+                //allowFontScaling
+                //minimumFontScale={.5}
+                style={styles.text}
+
+                >
                 {item.coreQ}
               </Text>
             </View>
@@ -72,6 +86,9 @@ export default class DecisionScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text>
+          A few questions
+        </Text>
         <Deck
           data={DATA}
           renderCard={this.renderCard}
@@ -88,11 +105,11 @@ const styles = StyleSheet.create({
     marginTop: '35%',
   },
   text: {
-    textAlign: 'center',
     fontWeight: 'bold',
     color: 'white',
     //backgroundColor: 'rgba(0,0,0,0)',
-    fontSize: 40,
+    fontSize: fontAutoSize,
+    //backgroundColor: 'rgba(0, 0, 0, 0.4)'
 },
   backgroundImage: {
     flex: 1,
@@ -101,18 +118,19 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 35,
     height: 250,
-    opacity: 1,
+  //  opacity: 0.2,
+  //  backgroundColor: 'rgba(255, 0, 0, 0.8)'
 },
-  canvas: {
-   position: 'relative',
-  //  top: -15,
-  //  left: -15,
-  // bottom: 0,
-  // right: -30,
-  //flex:1,
-  width: null,
-  height: null,
-},
+//   canvas: {
+//    position: 'relative',
+//   //  top: -15,
+//   //  left: -15,
+//   // bottom: 0,
+//   // right: -30,
+//   //flex:1,
+//   width: null,
+//   height: null,
+// },
   cardStyle: {
     //height: 120,
     borderWidth: 0,
@@ -121,5 +139,6 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     paddingBottom: 0,
     borderRadius: 40,
+    //opacity: 0.9
   },
 });
