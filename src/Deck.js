@@ -20,7 +20,6 @@ class Deck extends Component {
 
   constructor(props) {
     super(props);
-
     const position = new Animated.ValueXY();
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,//touchng this?
@@ -55,6 +54,8 @@ class Deck extends Component {
     LayoutAnimation.spring();
   }
 
+
+
   forceSwipe(direction) {
     const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH
     Animated.timing(this.state.position, {
@@ -84,6 +85,10 @@ class Deck extends Component {
       inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
       outputRange: ['-120deg', '0deg', '120deg']
     });
+    // const highlight = position.x.interpolate({
+    //   inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
+    //   outputRange: ['rgba(255, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.8)', 'rgba(0, 255, 0, 0.8)']
+    // });
 
     return {
       ...position.getLayout(),
@@ -116,7 +121,11 @@ class Deck extends Component {
       return (
       <Animated.View
         key={item.id}
-        style={[styles.cardStyle, { top: 10 * (i - this.state.index), right: 8 * (i - this.state.index), left: 8 * (i - this.state.index)}]}
+        style={[styles.cardStyle, {
+          top: 10 * (i - this.state.index),
+          right: 8 * (i - this.state.index),
+          left: 8 * (i - this.state.index),
+        }]}
         >
           {this.props.renderCard(item)}
       </Animated.View>
