@@ -41,8 +41,17 @@ class Deck extends Component {
       }//let go
     });
 
-    this.state = { panResponder, position, index: 0 };
+    this.state = {
+      panResponder,
+      position,
+      index: 0,
+      credits: 0,
+      finished: false,
+      numberHolder: 1,
+     };
   }
+
+
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
@@ -72,7 +81,26 @@ class Deck extends Component {
     direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
     this.state.position.setValue({ x: 0, y: 0 });
     this.setState({ index: this.state.index + 1 });
+    console.log("ID: " + this.state.index);
+    console.log("Direction: " + direction)
+    direction === 'right' ? this.setState({ credits: this.state.credits + 1 }) : this.setState({ credits: this.state.credits - 1 });
+    console.log("Credits: " + this.state.credits);
+
+    this.GenerateRandomNumber();
+
   }
+
+  GenerateRandomNumber = () => {
+    // Random 0 - 5
+    var RandomNumber = Math.floor(Math.random() * 5) + 1;
+    console.log("RandomNumber: "+RandomNumber);
+    var RandomNumberWithCredits = RandomNumber + this.state.credits;
+    console.log("RandomNumberWithCredits: "+ RandomNumberWithCredits);
+
+    this.setState({
+      numberHolder: RandomNumberWithCredits
+    })
+}
 
   resetPosition() {
     Animated.spring(this.state.position, {
@@ -97,27 +125,20 @@ class Deck extends Component {
     };
   }
 
-  //  getCardColor() {
-   //
-  //    const { color } = this.state;
-  //    return {
-  //      transform: [{ color }]
-  //    };
 
-  //   const color = position.x.interpolate({
-  //     inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
-  //     outputRange: ['rgba(255, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.8)', 'rgba(0, 255, 0, 0.8)']
-  //   });
-  //
-  //   return {
-  //     ...
-  //     transform: [{ color }]
-  //   }
-  // }
 
   renderCards() {
+
+
+
     if (this.state.index >= this.props.data.length) {
       return this.props.renderNoMoreCards();
+
+      if (this.state.numberHolder > 3) {
+        return this.props.renderDo();
+      } else if (this.state.numberHolder < 2) {
+        return this.props.renderNot();
+      }
     }
 
     return this.props.data.map((item, i) => {

@@ -3,6 +3,9 @@ import { Text, View, Dimensions, Keyboard, StatusBar } from 'react-native';
 import { Button, FormLabel, FormInput } from 'react-native-elements';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const fontAutoSize = SCREEN_WIDTH * 0.1;
+const fontAutoSizeSmall = SCREEN_WIDTH * 0.05;
+
 
 class WelcomeScreen extends Component {
   constructor(props) {
@@ -12,40 +15,38 @@ class WelcomeScreen extends Component {
   };
 }
 
-
-
-
-
   render() {
     const { navigate } = this.props.navigation;
-
     return (
       <View style={styles.screen}>
-        <StatusBar
+        {/* <StatusBar
           backgroundColor="blue"
           barStyle="light-content"
-        />
-        {/* <StatusBar hidden={true} /> */}
+        /> */}
+        <StatusBar hidden={true} />
 
         <View style={styles.upperScreen}>
           <Text style={styles.text}>THINK ABOUT IT</Text>
           {/* <Text style={styles.text}>and press the button</Text> */}
         </View>
-        <View style={styles.midScreen}>
+        {/* <View style={styles.midScreen}> */}
           {/* <Text style={styles.text}>OR write it down</Text> */}
-          <FormLabel>OR write it down</FormLabel>
-          <FormInput
-            onChangeText={searchString => this.setState({ searchString })}
-            value={this.state.searchString}
-            placeholder="Should I ..."
-          />
-        </View>
+          {/* <FormLabel>OR write it down</FormLabel> */}
+          {/* <FormInput */}
+            {/* onChangeText={searchString => this.setState({ searchString })} */}
+            {/* value={this.state.searchString} */}
+            {/* placeholder="Should I ..." */}
+          {/* /> */}
+        {/* </View> */}
         <View style={styles.bottomScreen}>
           <Button
             title="DECISION"
             raised
             large
-            //borderRadius= {20}
+            color="black"
+            fontSize={fontAutoSizeSmall}
+            //borderRadius="20"
+            borderRadius={20}
             buttonStyle={styles.button}
             onPress={() => {
               this.state.searchString === "" ? navigate("decision") : navigate("result");
@@ -53,7 +54,7 @@ class WelcomeScreen extends Component {
             }}
           />
         </View>
-        <View style={styles.spaceScreen}></View>
+        {/* <View style={styles.spaceScreen}></View> */}
       </View>
     );
   }
@@ -65,13 +66,13 @@ const styles = {
     flex: 1,
     //justifyContent: 'space-around',
     alignItems: 'center',
-    //backgroundColor: 'yellow'
+    backgroundColor: '#093145'
 
   },
   upperScreen: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     width: 0.8 * SCREEN_WIDTH,
     //backgroundColor: 'red',
   },
@@ -84,7 +85,7 @@ const styles = {
   },
   bottomScreen: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
 
     //backgroundColor: 'blue',
     alignItems: 'center',
@@ -97,11 +98,15 @@ const styles = {
 
   },
   text: {
-    fontSize: 30,
+    fontWeight: 'bold',
+    fontSize: fontAutoSize,
+    color: 'white'
   },
   button: {
-    backgroundColor: '#0288D1',
-    width: 0.7 * SCREEN_WIDTH
+    borderWidth: 0,
+    backgroundColor: 'rgba(233,204,87,1)',
+    width: 0.7 * SCREEN_WIDTH,
+    borderRadius: 20,
   }
 };
 

@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ImageBackground, Image, Dimensions } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import Deck from '../src/Deck';
+import Reward from '../src/Reward';
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const fontAutoSize = SCREEN_WIDTH * 0.1;
-
+export const fontAutoSize = SCREEN_WIDTH * 0.1;
 
 const DATA = [
   { id: 1, Q: 'Question #1', coreQ: 'Friendship', img: require('../src/img/friendship.jpg') },
   { id: 2, Q: 'Question #2', coreQ: 'Travel', img: require('../src/img/travel.jpg') },
   { id: 3, Q: 'Question #3', coreQ: 'Cash', img: require('../src/img/cash.jpg') },
-  { id: 4, Q: 'Question #4', coreQ: 'Love', img: require('../src/img/love.jpg') },
-  { id: 5, Q: 'Question #5', coreQ: 'Self Education', img: require('../src/img/selfedu.jpg') },
-  { id: 6, Q: 'Question #6', coreQ: 'Health', img: require('../src/img/health.jpg') },
+  // { id: 4, Q: 'Question #4', coreQ: 'Love', img: require('../src/img/love.jpg') },
+  // { id: 5, Q: 'Question #5', coreQ: 'Self Education', img: require('../src/img/selfedu.jpg') },
+  // { id: 6, Q: 'Question #6', coreQ: 'Health', img: require('../src/img/health.jpg') },
   // { id: 7, Q: 'Question #7', coreQ: 'Health' , uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
   // { id: 8, Q: 'Question #8', coreQ: , uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
   // { id: 9, Q: 'Question #8', coreQ: , uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
@@ -24,20 +25,25 @@ class BackgroundImage extends Component {
 
     render(image) {
         return (
-            <Image source={this.props.image}
-                  style={styles.backgroundImage}>
-
+            <Image source={this.props.image} style={styles.backgroundImage}>
                   {this.props.children}
-
             </Image>
         )
     }
 }
 
 export default class DecisionScreen extends Component {
+  constructor(props) {
+  super(props);
+  this.state = {
+    finished: false,
+    doit: false,
+  };
+
+}
+
   renderCard(item) {
     return (
-
       <Card
         key={item.id}
         containerStyle={styles.cardStyle}
@@ -52,14 +58,7 @@ export default class DecisionScreen extends Component {
               backgroundColor: 'rgba(0, 0, 0, 0.4)',
               //height: 150,
             }}>
-      <Text
-                //adjustsFontSizeToFit
-                //numberOfLines={1}
-                //allowFontScaling
-                //minimumFontScale={.5}
-                style={styles.text}
-
-                >
+              <Text style={[styles.text, { color: 'white' }]}>
                 {item.coreQ}
               </Text>
             </View>
@@ -69,44 +68,109 @@ export default class DecisionScreen extends Component {
     );
   }
 
+
+
+
   renderNoMoreCards() {
-    return (
-      <Card title="All done!">
-        <Text style={{ marginBottom: 10 }}>
-          There is no more content here!
-        </Text>
-        <Button
-          backgroundColor="#03A9F4"
-          title="Get more!"
-        />
-      </Card>
-    );
+
+    this.setState({ finished: true });
+    console.log("dosly karty..");
+    return (null);
   }
 
+
+  renderDo() {
+    this.setState({ doit: true })
+  }
+
+  renderNot() {
+    this.setState({ doit: false })
+  }
+
+
   render() {
-    return (
+
+
+    const { navigate } = this.props.navigation;
+
+  //   If (fini=true) {
+  //    return reward
+  //    } else {
+  //      return else
+  //    }
+
+    if (this.state.finished) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Reward
+            doit={this.state.doit}
+          />
+        </View>
+      );
+    } else {
+      return (
+
+
       <View style={styles.container}>
-        <Text>
-          A few questions
-        </Text>
-        <Deck
-          data={DATA}
-          renderCard={this.renderCard}
-          renderNoMoreCards={this.renderNoMoreCards}
-        />
+        <View style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          <Text style={[styles.text, { color: 'white' }]}>
+            RELATIVE WITH
+          </Text>
+          {/* <Button
+            title="DECISION"
+            raised
+            large
+            //borderRadius= {20}
+            buttonStyle={styles.button}
+            // onPress={() => {
+            //   navigate("result");
+            // }}
+            onPress={this.renderNoMoreCards}
+          /> */}
+        </View>
+        <View style={{ flex: 1 }}>
+          <Deck
+            data={DATA}
+            renderCard={this.renderCard}
+            renderNoMoreCards={this.renderNoMoreCards.bind(this)}
+
+            renderDo={this.renderDo.bind(this)}
+
+            renderNot={this.renderNot.bind(this)}
+
+            // renderNoMoreCards={() => {
+            //   navigate("result");
+            // }}
+          />
+        </View>
       </View>
     );
   }
+}
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: '35%',
+    //backgroundColor: 'rgba(101,210,237,1)'
+    //backgroundColor: 'rgba(110,230,253,1)'
+
+    backgroundColor: '#093145'
+
+
+    //marginTop: '35%',
+  },
+  button: {
+    backgroundColor: '#0288D1',
+    width: 0.7 * SCREEN_WIDTH
   },
   text: {
     fontWeight: 'bold',
-    color: 'white',
+    //color: 'white',
     //backgroundColor: 'rgba(0,0,0,0)',
     fontSize: fontAutoSize,
     //backgroundColor: 'rgba(0, 0, 0, 0.4)'
@@ -133,7 +197,11 @@ const styles = StyleSheet.create({
 // },
   cardStyle: {
     //height: 120,
+    borderBottomWidth: 0,
     borderWidth: 0,
+    //backgroundColor: '#093145',
+    //borderColor: '#093145',
+    //borderColor: 'white',
     paddingTop: 0,
     paddingLeft: 0,
     paddingRight: 0,
