@@ -7,6 +7,8 @@ import {
   LayoutAnimation,
   UIManager
 } from 'react-native';
+import {connect} from 'react-redux';
+import {onIncrement, onDecrement} from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * Dimensions.get('window').width;
@@ -45,7 +47,6 @@ class Deck extends Component {
       panResponder,
       position,
       index: 0,
-      credits: 0,
       finished: false,
       numberHolder: 1,
      };
@@ -81,26 +82,18 @@ class Deck extends Component {
     direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
     this.state.position.setValue({ x: 0, y: 0 });
     this.setState({ index: this.state.index + 1 });
-    console.log("ID: " + this.state.index);
-    console.log("Direction: " + direction)
-    direction === 'right' ? this.setState({ credits: this.state.credits + 1 }) : this.setState({ credits: this.state.credits - 1 });
-    console.log("Credits: " + this.state.credits);
+    direction === 'right' ? this.props.onIncrement(this.props.points) : this.props.onDecrement(this.props.points);
 
-    this.GenerateRandomNumber();
+    const kokot = this.props.points + 1;
+
+    console.log("ID: " + this.state.index);
+    console.log("Direction: " + direction);
+    console.log("kredity ve state: "+this.props.points);
+    console.log("zkouska: "+kokot);
+
 
   }
 
-  GenerateRandomNumber = () => {
-    // Random 0 - 5
-    var RandomNumber = Math.floor(Math.random() * 5) + 1;
-    console.log("RandomNumber: "+RandomNumber);
-    var RandomNumberWithCredits = RandomNumber + this.state.credits;
-    console.log("RandomNumberWithCredits: "+ RandomNumberWithCredits);
-
-    this.setState({
-      numberHolder: RandomNumberWithCredits
-    })
-}
 
   resetPosition() {
     Animated.spring(this.state.position, {
@@ -129,16 +122,17 @@ class Deck extends Component {
 
   renderCards() {
 
-
+    // if (this.state.numberHolder > 3 && this.state.index >= this.props.data.length) {
+    //   return this.props.renderDo();
+    // }
+    //
+    // if (this.state.numberHolder < 2 && this.state.index >= this.props.data.length) {
+    //   return this.props.renderNot();
+    // }
 
     if (this.state.index >= this.props.data.length) {
-      return this.props.renderNoMoreCards();
-
-      if (this.state.numberHolder > 3) {
-        return this.props.renderDo();
-      } else if (this.state.numberHolder < 2) {
-        return this.props.renderNot();
-      }
+    //  return this.props.renderNoMoreCards();
+    return this.props.renderDO;
     }
 
     return this.props.data.map((item, i) => {
@@ -187,4 +181,13 @@ const styles = {
   }
 };
 
-export default Deck;
+const mapStateToProps = ({counter}) => {
+  const {points} = counter;
+
+  return {points};
+};
+
+export default connect(mapStateToProps, {
+  onIncrement,
+  onDecrement,
+})(Deck);

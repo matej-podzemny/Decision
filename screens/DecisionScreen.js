@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, ImageBackground, Image, Dimensions } from 'reac
 import { Card, Button } from 'react-native-elements';
 import Deck from '../src/Deck';
 import Reward from '../src/Reward';
+import {connect} from 'react-redux';
+import {doitfunc, notitfunc} from '../actions';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -12,9 +14,9 @@ const DATA = [
   { id: 1, Q: 'Question #1', coreQ: 'Friendship', img: require('../src/img/friendship.jpg') },
   { id: 2, Q: 'Question #2', coreQ: 'Travel', img: require('../src/img/travel.jpg') },
   { id: 3, Q: 'Question #3', coreQ: 'Cash', img: require('../src/img/cash.jpg') },
-  // { id: 4, Q: 'Question #4', coreQ: 'Love', img: require('../src/img/love.jpg') },
-  // { id: 5, Q: 'Question #5', coreQ: 'Self Education', img: require('../src/img/selfedu.jpg') },
-  // { id: 6, Q: 'Question #6', coreQ: 'Health', img: require('../src/img/health.jpg') },
+  { id: 4, Q: 'Question #4', coreQ: 'Love', img: require('../src/img/love.jpg') },
+  { id: 5, Q: 'Question #5', coreQ: 'Self Education', img: require('../src/img/selfedu.jpg') },
+  { id: 6, Q: 'Question #6', coreQ: 'Health', img: require('../src/img/health.jpg') },
   // { id: 7, Q: 'Question #7', coreQ: 'Health' , uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-09.jpg' },
   // { id: 8, Q: 'Question #8', coreQ: , uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
   // { id: 9, Q: 'Question #8', coreQ: , uri: 'http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-01.jpg' },
@@ -32,12 +34,11 @@ class BackgroundImage extends Component {
     }
 }
 
-export default class DecisionScreen extends Component {
+class DecisionScreen extends Component {
   constructor(props) {
   super(props);
   this.state = {
     finished: false,
-    doit: false,
   };
 
 }
@@ -71,20 +72,24 @@ export default class DecisionScreen extends Component {
 
 
 
-  renderNoMoreCards() {
-
-    this.setState({ finished: true });
-    console.log("dosly karty..");
-    return (null);
-  }
+  // renderNoMoreCards() {
+  //
+  //   this.setState({ finished: true });
+  //   console.log("dosly karty..");
+  //   return (null);
+  // }
 
 
   renderDo() {
-    this.setState({ doit: true })
+    console.log("Render DOOOOO!");
+    this.setState({ doit: true });
+    return (null);
   }
 
   renderNot() {
-    this.setState({ doit: false })
+    console.log("NOOOOOOOT REnder!");
+    this.setState({ doit: false });
+    return (null);
   }
 
 
@@ -136,9 +141,9 @@ export default class DecisionScreen extends Component {
           <Deck
             data={DATA}
             renderCard={this.renderCard}
-            renderNoMoreCards={this.renderNoMoreCards.bind(this)}
+            //renderNoMoreCards={this.renderNoMoreCards.bind(this)}
 
-            renderDo={this.renderDo.bind(this)}
+            renderDo={this.renderDo}
 
             renderNot={this.renderNot.bind(this)}
 
@@ -210,3 +215,14 @@ const styles = StyleSheet.create({
     //opacity: 0.9
   },
 });
+
+const mapStateToProps = ({decision}) => {
+  const {doit} = decision;
+
+  return {doit};
+};
+
+export default connect(mapStateToProps, {
+  doitfunc,
+  notitfunc
+})(DecisionScreen);
