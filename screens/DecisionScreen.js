@@ -4,7 +4,7 @@ import { Card, Button } from 'react-native-elements';
 import Deck from '../src/Deck';
 import Reward from '../src/Reward';
 import {connect} from 'react-redux';
-import {doitfunc, notitfunc} from '../actions';
+import { doOrDoNot } from '../actions';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -72,25 +72,14 @@ class DecisionScreen extends Component {
 
 
 
-  // renderNoMoreCards() {
-  //
-  //   this.setState({ finished: true });
-  //   console.log("dosly karty..");
-  //   return (null);
-  // }
-
-
-  renderDo() {
-    console.log("Render DOOOOO!");
-    this.setState({ doit: true });
+  renderNoMoreCards(points) {
+    //console.log("pocet bodiku?"+points);
+    this.setState({ finished: true });
+    //this.props.doOrDoNot(points);
+    //console.log("dosly karty..");
     return (null);
   }
 
-  renderNot() {
-    console.log("NOOOOOOOT REnder!");
-    this.setState({ doit: false });
-    return (null);
-  }
 
 
   render() {
@@ -108,7 +97,7 @@ class DecisionScreen extends Component {
       return (
         <View style={{ flex: 1 }}>
           <Reward
-            doit={this.state.doit}
+            doit
           />
         </View>
       );
@@ -141,11 +130,9 @@ class DecisionScreen extends Component {
           <Deck
             data={DATA}
             renderCard={this.renderCard}
-            //renderNoMoreCards={this.renderNoMoreCards.bind(this)}
+            renderNoMoreCards={this.renderNoMoreCards.bind(this)}
 
-            renderDo={this.renderDo}
 
-            renderNot={this.renderNot.bind(this)}
 
             // renderNoMoreCards={() => {
             //   navigate("result");
@@ -217,12 +204,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({decision}) => {
-  const {doit} = decision;
+  const {doit, points} = decision;
 
-  return {doit};
+  return {doit, points};
 };
 
 export default connect(mapStateToProps, {
-  doitfunc,
-  notitfunc
+  doOrDoNot,
 })(DecisionScreen);

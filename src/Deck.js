@@ -8,7 +8,7 @@ import {
   UIManager
 } from 'react-native';
 import {connect} from 'react-redux';
-import {onIncrement, onDecrement} from '../actions';
+import {onIncrement, onDecrement, doOrDoNot} from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * Dimensions.get('window').width;
@@ -131,8 +131,8 @@ class Deck extends Component {
     // }
 
     if (this.state.index >= this.props.data.length) {
-    //  return this.props.renderNoMoreCards();
-    return this.props.renderDO;
+      return this.props.renderNoMoreCards(this.props.points);
+      return this.props.doOrDoNot(this.props.points);
     }
 
     return this.props.data.map((item, i) => {
@@ -190,4 +190,5 @@ const mapStateToProps = ({counter}) => {
 export default connect(mapStateToProps, {
   onIncrement,
   onDecrement,
+  doOrDoNot,
 })(Deck);
