@@ -127,7 +127,7 @@ class Deck extends Component {
         return (
           <Animated.View
             key={item.id}
-            style={[this.getCardStyle(), styles.cardStyle]}
+            style={[this.getCardStyle(), styles.cardStyle03, { width: SCREEN_WIDTH }]}
             {...this.state.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
@@ -137,7 +137,7 @@ class Deck extends Component {
       return (
       <Animated.View
         key={item.id}
-        style={[styles.cardStyle, {
+        style={[styles.cardStyle03, {
 
           top: 10 * (i - this.state.index),
           right: 8 * (i - this.state.index),

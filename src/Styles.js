@@ -42,6 +42,18 @@ export default StyleSheet.create({
     borderRadius: 35,
     height: 250,
   },
+  cardStyle02: {
+    borderBottomWidth: 0,
+    borderWidth: 0,
+    paddingTop: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    borderRadius: 40,
+  },
+  cardStyle03: {
+    position: 'absolute',
+  },
   cardStyle: {
     borderBottomWidth: 0,
     borderWidth: 0,
@@ -49,11 +61,13 @@ export default StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 0,
     paddingBottom: 0,
-    width: SCREEN_WIDTH,
     borderRadius: 40,
+
+    width: SCREEN_WIDTH,
     position: 'absolute',
 
   },
+  // text na stred, transparent backgroud, přes celou kartu
   transparent: {
     flex:1,
     justifyContent: "center",

@@ -36,7 +36,7 @@ class DecisionScreen extends Component {
 
   renderCard(item) {
     return (
-    <Card key={item.id} containerStyle={styles.cardStyle}>
+    <Card key={item.id} containerStyle={styles.cardStyle02}>
       <BackgroundImage image={item.img} style={styles.backgroundImage}>
         <View style={styles.transparent}>
           <Text style={styles.text}>
@@ -62,6 +62,8 @@ class DecisionScreen extends Component {
           <Deck data={DATA} renderCard={this.renderCard}/>
         </View>
       </View>);
+
+
     } else {
       return (
       <View style={styles.container}>
