@@ -1,37 +1,31 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Animated,
-  PanResponder,
-  Dimensions,
-  LayoutAnimation,
-  UIManager
-} from 'react-native';
+import { View, Animated, PanResponder, Dimensions, LayoutAnimation, UIManager } from 'react-native';
 import {connect} from 'react-redux';
-import {onIncrement, onDecrement, doOrDoNot} from '../actions';
+import {onIncrement, onDecrement, showDeck } from '../actions';
+import styles from './Styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * Dimensions.get('window').width;
 const SWIPE_OUT_DURATION = 250;
 
+
+
 class Deck extends Component {
-  static defaultProps ={
+  static defaultProps = {
     onSwipeRight: () => {},
     onSwipeLeft: () => {}
   }
-
   constructor(props) {
     super(props);
-    // const color = new Animated.value();
     const position = new Animated.ValueXY();
     const panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,//touchng this?
+      onStartShouldSetPanResponder: () => true, //touchng this?
       onPanResponderMove: (event, gesture) => {
         //Called when user tap and drag object
         //gesture has all the info.
         //debugger;
-        position.setValue({ x: gesture.dx, y: gesture.dy });
-      },//object is moving
+        position.setValue({x: gesture.dx, y: gesture.dy});
+      }, //object is moving
       onPanResponderRelease: (event, gesture) => {
         if (gesture.dx > SWIPE_THRESHOLD) {
           this.forceSwipe('right');
@@ -40,16 +34,14 @@ class Deck extends Component {
         } else {
           this.resetPosition();
         }
-      }//let go
+      } //let go
     });
 
     this.state = {
       panResponder,
       position,
-      index: 0,
-      finished: false,
-      numberHolder: 1,
-     };
+      index: 0
+    };
   }
 
 
@@ -63,6 +55,10 @@ class Deck extends Component {
   componentWillUpdate() {
     UIManager.setLayoutAnimationsEnabledExperimental && UIManager.LayoutAnimationEnabledExperimental(true);
     LayoutAnimation.spring();
+    if(this.state.index === 3) {
+      this.props.showDeck(false);
+      console.log("Je to domaaaaaaaaaa!!!!!!!!!!!!");
+    }
   }
 
 
@@ -84,12 +80,11 @@ class Deck extends Component {
     this.setState({ index: this.state.index + 1 });
     direction === 'right' ? this.props.onIncrement(this.props.points) : this.props.onDecrement(this.props.points);
 
-    const kokot = this.props.points + 1;
-
+    console.log("--------CardMoved------------------");
     console.log("ID: " + this.state.index);
     console.log("Direction: " + direction);
-    console.log("kredity ve state: "+this.props.points);
-    console.log("zkouska: "+kokot);
+    console.log("this.props.points: "+this.props.points);
+    console.log("                                   ");
 
 
   }
@@ -122,18 +117,8 @@ class Deck extends Component {
 
   renderCards() {
 
-    // if (this.state.numberHolder > 3 && this.state.index >= this.props.data.length) {
-    //   return this.props.renderDo();
-    // }
-    //
-    // if (this.state.numberHolder < 2 && this.state.index >= this.props.data.length) {
-    //   return this.props.renderNot();
-    // }
 
-    if (this.state.index >= this.props.data.length) {
-      return this.props.renderNoMoreCards(this.props.points);
-      return this.props.doOrDoNot(this.props.points);
-    }
+
 
     return this.props.data.map((item, i) => {
       if (i < this.state.index) { return null; }
@@ -142,7 +127,7 @@ class Deck extends Component {
         return (
           <Animated.View
             key={item.id}
-            style={[this.getCardStyle(), styles.cardStyle, { width: SCREEN_WIDTH }]}
+            style={[this.getCardStyle(), styles.cardStyle]}
             {...this.state.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
@@ -153,6 +138,7 @@ class Deck extends Component {
       <Animated.View
         key={item.id}
         style={[styles.cardStyle, {
+
           top: 10 * (i - this.state.index),
           right: 8 * (i - this.state.index),
           left: 8 * (i - this.state.index),
@@ -162,24 +148,19 @@ class Deck extends Component {
       </Animated.View>
       );
     }).reverse();
+
+
   }
 
   render() {
     return (
-      <View>
+      <View style={styles.screen}>
         {this.renderCards()}
       </View>
     );
   }
 }
 
-const styles = {
-  cardStyle: {
-    position: 'absolute',
-    //width: SCREEN_WIDTH
-    //width or left:0, right:0
-  }
-};
 
 const mapStateToProps = ({counter}) => {
   const {points} = counter;
@@ -190,5 +171,5 @@ const mapStateToProps = ({counter}) => {
 export default connect(mapStateToProps, {
   onIncrement,
   onDecrement,
-  doOrDoNot,
+  showDeck,
 })(Deck);
